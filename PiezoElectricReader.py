@@ -1,4 +1,4 @@
-class PiezoElectricADC:
+class PiezoElectricReader:
 
   '''
   Detects the presence based on GPIO readings and processing
