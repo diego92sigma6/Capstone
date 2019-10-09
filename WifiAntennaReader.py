@@ -9,7 +9,7 @@ class WifiAntennaReader:
     The intensity will later be used as a feature in the predictive model
     :return a paired list of phones + signal intensity
     """
-    def GetAmountOfDetectedHosts(self):
+    def getDetectedHosts(self):
         readings = self.getAirmonReadings()
         phoneIntensityPairs = self.formatReadings(readings)
         return phoneIntensityPairs
