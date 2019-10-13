@@ -3,7 +3,7 @@
 import cv2
 import numpy as np
 import math
-import Main
+import CameraOperator as Main
 import random
 
 import Preprocess

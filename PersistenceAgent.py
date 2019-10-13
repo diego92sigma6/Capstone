@@ -19,6 +19,19 @@ class PersistenceAgent:
         self.mongoClient = pymongo.MongoClient(MONGO_CONNECTION_STRING)
         self.database = self.mongoClient[MONGO_DATABASE_NAME]
 
+    def storeLicensePlate(self, detectedPlate, picture):
+        if self.database is None:
+            raise Exception('Expected to have an open connection to the database')
+        else:
+            #Prepare image (byte array)
+            byteImage = picture.tobytes()
+
+            licensePlateCollection = self.database['LicensePlates']
+            licensePlateCollection.insert({
+                "licensePlate": detectedPlate,
+                "picture": None
+            })
+
     """
     Prepares the data to be stored on a database
     TODO: test

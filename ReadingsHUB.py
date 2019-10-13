@@ -5,7 +5,7 @@ from MotionSensorReader import *
 from WifiAntennaReader import *
 import time
 
-POLLING_PERIOD = 1
+POLLING_PERIOD = 3
 
 class ReadingsHUB:
 
@@ -18,8 +18,8 @@ class ReadingsHUB:
     wifiAntennaReader = None
 
     def __init__(self):
-        self.agentAlerter = AgentAlerter()
         self.persistenceAgent = PersistenceAgent()
+        self.agentAlerter = AgentAlerter(self.persistenceAgent)
         self.piezoElectricReader = PiezoElectricReader()
         self.motionSensorReader = MotionSensorReader()
         self.wifiAntennaReader = WifiAntennaReader()

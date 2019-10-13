@@ -4,8 +4,7 @@ def main():
     print("starting system")
     readingsHUB = ReadingsHUB()
     while True:
-        #wait
-        i = 0
+        pass
 
 if __name__ == "__main__":
     main()

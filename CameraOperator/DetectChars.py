@@ -6,7 +6,7 @@ import numpy as np
 import math
 import random
 
-import Main
+import CameraOperator as Main
 import Preprocess
 import PossibleChar
 
@@ -48,7 +48,7 @@ def loadKNNDataAndTrainKNN():
     validContoursWithData = []              # we will fill these shortly
 
     try:
-        npaClassifications = np.loadtxt("classifications.txt", np.float32)                  # read in training classifications
+        npaClassifications = np.loadtxt("CameraOperator/classifications.txt", np.float32)                  # read in training classifications
     except:                                                                                 # if file could not be opened
         print("error, unable to open classifications.txt, exiting program\n")  # show error message
         os.system("pause")
@@ -56,7 +56,7 @@ def loadKNNDataAndTrainKNN():
     # end try
 
     try:
-        npaFlattenedImages = np.loadtxt("flattened_images.txt", np.float32)                 # read in training images
+        npaFlattenedImages = np.loadtxt("CameraOperator/flattened_images.txt", np.float32)                 # read in training images
     except:                                                                                 # if file could not be opened
         print("error, unable to open flattened_images.txt, exiting program\n")  # show error message
         os.system("pause")
