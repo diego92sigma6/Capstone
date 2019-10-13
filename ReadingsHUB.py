@@ -1,13 +1,15 @@
-import AgentAlerter
-import PersistenceAgent
-import PiezoElectricReader
-import MotionSensorReader
-import WifiAntennaReader
+from AgentAlerter import *
+from PersistenceAgent import *
+from PiezoElectricReader import *
+from MotionSensorReader import *
+from WifiAntennaReader import *
 import time
 
 POLLING_PERIOD = 1
 
 class ReadingsHUB:
+
+
 
     agentAlerter = None
     persistenceAgent = None
