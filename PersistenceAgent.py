@@ -1,4 +1,5 @@
 import pymongo
+import datetime
 
 MONGO_CONNECTION_STRING = 'mongodb://localhost:27017'
 MONGO_DATABASE_NAME = 'Capstone'
@@ -27,7 +28,7 @@ class PersistenceAgent:
             raise Exception('Expected to have an open connection to the database')
         rawdataCollection = self.database['Rawdata']
         formattedInfo = self.formatInfo(gatheredInfo)
-        rawdataCollection.insertMany(formattedInfo)
+        rawdataCollection.insert_many(formattedInfo)
         return
 
     """
@@ -35,6 +36,22 @@ class PersistenceAgent:
     TODO: Implement formatting
     """
     def formatInfo(self, gatheredInfo):
-        #not implemented
-        return gatheredInfo
+        result = [
+            {
+                "type": "motion",
+                "data": gatheredInfo["motion"],
+                "date": datetime.datetime.now()
+            },
+            {
+                "type": "piezo",
+                "data": gatheredInfo["piezo"],
+                "date": datetime.datetime.now()
+            },
+            {
+                "type": "wifi",
+                "data": gatheredInfo["wifi"],
+                "date": datetime.datetime.now()
+            },
+        ]
+        return result
 
