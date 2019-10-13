@@ -29,7 +29,8 @@ class PersistenceAgent:
             licensePlateCollection = self.database['LicensePlates']
             licensePlateCollection.insert({
                 "licensePlate": detectedPlate,
-                "picture": None
+                "picture": None,
+                "date": datetime.datetime.now()
             })
 
     """

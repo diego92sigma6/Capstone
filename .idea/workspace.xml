@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a16c5a9-f716-476e-9ff8-3a44690ce37e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CameraOperator/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AgentAlerter.py" beforeDir="false" afterPath="$PROJECT_DIR$/AgentAlerter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CameraOperator/CameraOperator.py" beforeDir="false" afterPath="$PROJECT_DIR$/CameraOperator/CameraOperator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CameraOperator/DetectChars.py" beforeDir="false" afterPath="$PROJECT_DIR$/CameraOperator/DetectChars.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CameraOperator/DetectPlates.py" beforeDir="false" afterPath="$PROJECT_DIR$/CameraOperator/DetectPlates.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PersistenceAgent.py" beforeDir="false" afterPath="$PROJECT_DIR$/PersistenceAgent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReadingsHUB.py" beforeDir="false" afterPath="$PROJECT_DIR$/ReadingsHUB.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,7 +12,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CameraOperator/CameraOperator.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="216">
@@ -68,11 +60,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/PersistenceAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
+            <state relative-caret-position="72">
+              <caret line="31" column="31" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -115,8 +107,8 @@
         <option value="$PROJECT_DIR$/CameraOperator/DetectPlates.py" />
         <option value="$PROJECT_DIR$/CameraOperator/DetectChars.py" />
         <option value="$PROJECT_DIR$/AgentAlerter.py" />
-        <option value="$PROJECT_DIR$/PersistenceAgent.py" />
         <option value="$PROJECT_DIR$/CameraOperator/CameraOperator.py" />
+        <option value="$PROJECT_DIR$/PersistenceAgent.py" />
       </list>
     </option>
   </component>
@@ -219,6 +211,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
@@ -338,22 +331,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PersistenceAgent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CameraOperator/CameraOperator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="87" column="11" selection-start-line="87" selection-start-column="11" selection-end-line="87" selection-end-column="11" />
           <folding>
             <element signature="e#10#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PersistenceAgent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="31" column="31" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
