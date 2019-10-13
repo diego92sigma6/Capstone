@@ -19,6 +19,7 @@ SCALAR_GREEN = (0.0, 255.0, 0.0)
 SCALAR_RED = (0.0, 0.0, 255.0)
 
 showSteps = False
+showResult = False
 
 ###################################################################################################
 def captureAndProcess():
@@ -31,15 +32,12 @@ def captureAndProcess():
     # end if
 
     #return_value, imgOriginalScene = cv2.VideoCapture(0).read()
-    #imgOriginalScene  = cv2.imread("LicPlateImages/1.png")               # open image
 
-    #while True:
-    if True:
-        return_value, imgOriginalScene = cv2.VideoCapture(0).read()
-        #imgOriginalScene  = cv2.imread("LicPlateImages/4.png")               # open image
-        doTheRest(blnKNNTrainingSuccessful, imgOriginalScene)
-        #cv2.waitKey(10)
-    # end while
+    #Uses webcam
+    #return_value, imgOriginalScene = cv2.VideoCapture(0).read()
+    #Uses file
+    imgOriginalScene  = cv2.imread("CameraOperator/LicPlateImages/1.png")               # open image
+    return doTheRest(blnKNNTrainingSuccessful, imgOriginalScene)
 
 
 def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
@@ -54,7 +52,8 @@ def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
 
     listOfPossiblePlates = DetectChars.detectCharsInPlates(listOfPossiblePlates)        # detect chars in plates
 
-    cv2.imshow("imgOriginalScene", imgOriginalScene)            # show scene image
+    if showResult:
+        cv2.imshow("imgOriginalScene", imgOriginalScene)            # show scene image
 
     if len(listOfPossiblePlates) == 0:                          # if no plates were found
         print("\nno license plates were detected\n")  # inform user no plates were found
@@ -67,8 +66,9 @@ def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
                 # suppose the plate with the most recognized chars (the first plate in sorted by string length descending order) is the actual plate
         licPlate = listOfPossiblePlates[0]
 
-        cv2.imshow("imgPlate", licPlate.imgPlate)           # show crop of plate and threshold of plate
-        cv2.imshow("imgThresh", licPlate.imgThresh)
+        if showResult:
+            cv2.imshow("imgPlate", licPlate.imgPlate)           # show crop of plate and threshold of plate
+            cv2.imshow("imgThresh", licPlate.imgThresh)
 
         if len(licPlate.strChars) == 0:                     # if no chars were found in the plate
             print("\nno characters were detected\n\n")  # show message
@@ -82,7 +82,8 @@ def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
 
         writeLicensePlateCharsOnImage(imgOriginalScene, licPlate)           # write license plate text on the image
 
-        cv2.imshow("imgOriginalScene", imgOriginalScene)                # re-show scene image
+        if showResult:
+            cv2.imshow("imgOriginalScene", imgOriginalScene)                # re-show scene image
 
         cv2.imwrite("imgOriginalScene.png", imgOriginalScene)           # write image out to file
 
@@ -90,7 +91,7 @@ def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
 
     cv2.waitKey(0)					# hold windows open until user presses a key
 
-    return
+    return licPlate.strChars, imgOriginalScene
 # end main
 
 ###################################################################################################
