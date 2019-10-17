@@ -1,4 +1,12 @@
+import Constants as Constants
+import RPi.GPIO as GPIO
+
 class MotionSensorReader:
+
+    def __init__(self):
+	GPIO.setup(11, GPIO.IN)
+	GPIO.setup(3, GPIO.OUT)
+
 
     """
     Orchestrates the readings from the sensor
@@ -14,8 +22,13 @@ class MotionSensorReader:
     '''
 
     def readFromMotionSensorPin(self):
-        # mock data
-        return 1
+	reading = GPIO.input(Constants.MOTION_SENSOR_PIN)
+	print('motion sensor = %s'%(reading))
+	if reading == 1:
+		GPIO.output(Constants.MOTION_SENSOR_LED_PIN, 1)
+	else:
+		GPIO.output(Constants.MOTION_SENSOR_LED_PIN, 0)
+        return reading
 
     '''
     Processes the reading obtained by the GPIO pin and determines whether
@@ -23,5 +36,4 @@ class MotionSensorReader:
     '''
 
     def determineMotionDetection(self, motionSensorReading):
-        # mock data
-        return True
+	return motionSensorReading == 1
