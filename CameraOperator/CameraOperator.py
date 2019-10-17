@@ -89,7 +89,8 @@ def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
 
     # end if else
 
-    cv2.waitKey(0)					# hold windows open until user presses a key
+	if showResult:
+    		cv2.waitKey(0)					# hold windows open until user presses a key
 
     return licPlate.strChars, imgOriginalScene
 # end main
