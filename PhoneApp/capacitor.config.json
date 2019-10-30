@@ -1,0 +1,8 @@
+{
+  "allowMixedContent" : true,
+  "appId": "io.ionic.starter",
+  "appName": "PhoneApp",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build"
+}
