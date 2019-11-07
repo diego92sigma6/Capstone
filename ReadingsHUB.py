@@ -25,7 +25,8 @@ class ReadingsHUB:
         self.wifiAntennaReader = WifiAntennaReader()
         while True:
             gatheredInfo = self.pollReaders()
-            self.agentAlerter.processAndAlert(gatheredInfo)
+            alertResults = self.agentAlerter.processAndAlert(gatheredInfo)
+            gatheredInfo['alertResults'] = alertResults
             self.persistenceAgent.storeRawData(gatheredInfo)
             time.sleep(POLLING_PERIOD)
 

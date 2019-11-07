@@ -1,6 +1,6 @@
 from bson.json_util import dumps
 import bottle
-from bottle import route, run, request, abort
+from bottle import route, run, request, abort, response
 #from pymongo import Connection
 from pymongo import MongoClient
 
@@ -8,6 +8,24 @@ from pymongo import MongoClient
 #connection = Connection('localhost', 27017)
 connection = MongoClient()
 db = connection.Capstone 
+
+
+
+
+# the decorator
+def enable_cors(fn):
+    def _enable_cors(*args, **kwargs):
+        # set CORS headers
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+        if bottle.request.method != 'OPTIONS':
+            # actual request; reply with the actual response
+            return fn(*args, **kwargs)
+
+    return _enable_cors
+
 
 '''
 @route('/rawdata', method='PUT')
@@ -25,6 +43,7 @@ def put_document():
 '''
      
 @route('/rawdata/:id', method='GET')
+@enable_cors
 def get_rawdata(id):
     entity = db['Rawdata'].find_one({'_id':id})
     if not entity:
@@ -32,6 +51,7 @@ def get_rawdata(id):
     return dumps(entity)
 
 @route('/rawdata', method='GET')
+@enable_cors
 def get_rawdatas():
     pipeline = [
             {

@@ -9,6 +9,9 @@ import time
 import DetectChars
 import DetectPlates
 import PossiblePlate
+from picamera import PiCamera
+from picamera.array import PiRGBArray
+from time import sleep
 
 
 # module level variables ##########################################################################
@@ -20,6 +23,9 @@ SCALAR_RED = (0.0, 0.0, 255.0)
 
 showSteps = False
 showResult = False
+saveCameraPics = True
+
+
 
 ###################################################################################################
 def captureAndProcess():
@@ -36,9 +42,24 @@ def captureAndProcess():
     #Uses webcam
     #return_value, imgOriginalScene = cv2.VideoCapture(0).read()
     #Uses file
-    imgOriginalScene  = cv2.imread("CameraOperator/LicPlateImages/1.png")               # open image
+    #imgOriginalScene  = cv2.imread("CameraOperator/LicPlateImages/1.png")               # open image
+    #Uses picamera
+    imgOriginalScene  = takePicWithRaspberryCamera()     
+    
     return doTheRest(blnKNNTrainingSuccessful, imgOriginalScene)
 
+def takePicWithRaspberryCamera():
+    camera = PiCamera()
+    camera.resolution = (320,240)
+    camera.framerate = 24
+    #camera.start_preview(alpha=200)
+    #sleep(5)
+    #camera.stop_preview()
+    #picBuffer = np.empty((240, 320, 3), dtype=np.uint8)
+    picBuffer = PiRGBArray(camera)
+    camera.capture(picBuffer, format='bgr')
+     
+    return picBuffer.array
 
 def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
 
@@ -148,10 +169,7 @@ def writeLicensePlateCharsOnImage(imgOriginalScene, licPlate):
 
 ###################################################################################################
 if __name__ == "__main__":
-    main()
-
-
-
+    captureAndProcess()
 
 
 

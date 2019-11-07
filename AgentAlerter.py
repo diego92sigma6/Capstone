@@ -15,10 +15,15 @@ class AgentAlerter:
     TODO: Implement regression model here
     """
     def processAndAlert(self, gatheredInfo):
-        #always
-        detectedPlate, picture = CameraOperator.captureAndProcess()
-        print('Detected plate: %s' % (detectedPlate))
-        self.storeLicensePlate(detectedPlate, picture)
+        if gatheredInfo['motion'] == 1:
+            #always
+            detectedPlate, picture = CameraOperator.captureAndProcess()
+            print('Detected plate: %s' % (detectedPlate))
+            pictureID = self.storeLicensePlate(detectedPlate, picture)
+
+            return {
+                'pictureID': pictureID
+            }
 
 
     """
