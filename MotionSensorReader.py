@@ -23,7 +23,7 @@ class MotionSensorReader:
 
     def readFromMotionSensorPin(self):
 	reading = GPIO.input(Constants.MOTION_SENSOR_PIN)
-	print('motion sensor = %s'%(reading))
+	print('[MOTION] status = %s'%(reading))
 	if reading == 1:
 		GPIO.output(Constants.MOTION_SENSOR_LED_PIN, 1)
 	else:

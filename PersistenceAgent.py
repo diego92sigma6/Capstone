@@ -1,6 +1,7 @@
 import pymongo
 import datetime
 import gridfs
+import base64
 
 MONGO_CONNECTION_STRING = 'mongodb://localhost:27017'
 MONGO_DATABASE_NAME = 'Capstone'
@@ -32,16 +33,21 @@ class PersistenceAgent:
             raise Exception('Expected to have an associated gridfs object')
         else:
             
-            pictureID = self.fs.put(picture.tostring(), encoding='utf-8')
-
+            b64 = base64.b64encode(picture)
+            pictureID = self.fs.put(b64, encoding='utf-8')
             licensePlateCollection = self.database['LicensePlates']
             licensePlateCollection.insert({
                 "licensePlate": detectedPlate,
                 "pictureID": pictureID,
                 "date": datetime.datetime.now()
             })
+            print('[PERSISTENCE] stored picture id: %s' % (pictureID))
 
-            return pictureID
+            return {
+                    'pictureID'  : pictureID,
+                    #'shape' : picture.shape,
+                    #'dtype': str(picture.dtype)
+                    }
 
     """
     Prepares the data to be stored on a database
@@ -78,5 +84,14 @@ class PersistenceAgent:
                 "date": now
             },
         ]
+        if gatheredInfo['alertResults'] is not None:
+            if gatheredInfo['alertResults']['pictureID'] is not None:
+                result.append({
+                    "type": "camera",
+                    "data": gatheredInfo['alertResults']['pictureID'],
+                    "date": now,
+                    #"shape": gatheredInfo['alertResults']['shape'],
+                    #"dtype": gatheredInfo['alertResults']['dtype'],
+                })
         return result
 

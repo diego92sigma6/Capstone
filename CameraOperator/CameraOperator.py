@@ -46,7 +46,11 @@ def captureAndProcess():
     #Uses picamera
     imgOriginalScene  = takePicWithRaspberryCamera()     
     
-    return doTheRest(blnKNNTrainingSuccessful, imgOriginalScene)
+    plate, pic = doTheRest(blnKNNTrainingSuccessful, imgOriginalScene)
+    print('[CAMERA] Done')
+    if pic is not None:
+        _, pic = cv2.imencode('.jpg',pic)
+    return plate, pic
 
 def takePicWithRaspberryCamera():
     camera = PiCamera()
@@ -58,6 +62,7 @@ def takePicWithRaspberryCamera():
     #picBuffer = np.empty((240, 320, 3), dtype=np.uint8)
     picBuffer = PiRGBArray(camera)
     camera.capture(picBuffer, format='bgr')
+    camera.close()
      
     return picBuffer.array
 
@@ -66,7 +71,7 @@ def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
     if imgOriginalScene is None:                            # if image was not read successfully
         print("\nerror: image not read from file \n\n")  # print error message to std out
         os.system("pause")                                  # pause so user can see error message
-        return                                              # and exit program
+        return '', None                                             # and exit program
     # end if
 
     listOfPossiblePlates = DetectPlates.detectPlatesInScene(imgOriginalScene)           # detect plates
@@ -77,7 +82,8 @@ def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
         cv2.imshow("imgOriginalScene", imgOriginalScene)            # show scene image
 
     if len(listOfPossiblePlates) == 0:                          # if no plates were found
-        print("\nno license plates were detected\n")  # inform user no plates were found
+        print("[CAMERA] no license plates were detected\n")  # inform user no plates were found
+        return '', imgOriginalScene
     else:                                                       # else
                 # if we get in here list of possible plates has at leat one plate
 
@@ -92,8 +98,8 @@ def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
             cv2.imshow("imgThresh", licPlate.imgThresh)
 
         if len(licPlate.strChars) == 0:                     # if no chars were found in the plate
-            print("\nno characters were detected\n\n")  # show message
-            return                                          # and exit program
+            print("[CAMERA] no characters were detected\n\n")  # show message
+            return '', imgOriginalScene
         # end if
 
         drawRedRectangleAroundPlate(imgOriginalScene, licPlate)             # draw red rectangle around plate
@@ -113,7 +119,7 @@ def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
 	if showResult:
     		cv2.waitKey(0)					# hold windows open until user presses a key
 
-    return licPlate.strChars, imgOriginalScene
+        return licPlate.strChars, imgOriginalScene
 # end main
 
 ###################################################################################################
