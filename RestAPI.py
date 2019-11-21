@@ -1,15 +1,28 @@
 from bson.json_util import dumps
+import cv2
+import base64
+from bson import json_util
+from json import dumps
+from json import JSONEncoder
+import numpy as np
+import traceback
 import bottle
 from bottle import route, run, request, abort, response
 #from pymongo import Connection
 from pymongo import MongoClient
-
+import gridfs
+from bson.objectid import ObjectId
  
 #connection = Connection('localhost', 27017)
 connection = MongoClient()
 db = connection.Capstone 
+fs = gridfs.GridFS(db)
 
-
+#class NumpyEncoder(JSONEncoder):
+    #def default(self, obj):
+        #if isinstance(obj, np.ndarray):
+            #return obj.tolist()
+        #return JSONEncoder.default(self.obj)
 
 
 # the decorator
@@ -62,8 +75,29 @@ def get_rawdatas():
                 '$limit': 100
             }]
     entity = db['Rawdata'].aggregate(pipeline)
+    result = []
+    for doc in entity:
+        if doc['type'] == 'camera' or True:
+            #doc['data'] = fs.get(doc['data'])
+            result.append(doc)
     if not entity:
         abort(404, 'Failed')
-    return dumps(entity)
+    json = dumps(result, ensure_ascii=False, default=str).encode('utf-8')
+    return json
+
+@route('/image/:oid',method='GET')
+@enable_cors
+def get_image(oid):
+    try:
+        img = fs.get(ObjectId(oid)).read()
+        response.set_header('Content-type', 'application/json')
+        result = [{ 'img' : img }]
+        return dumps(result, ensure_ascii=False, default=str).encode('utf-8')
+
+        return base64.b64encode(img)
+    except:
+        traceback.print_exc()
+        return None
+
  
-run(host='0.0.0.0', port=8080)
+run(host='0.0.0.0', port=8080, debug=True)
