@@ -104,3 +104,7 @@ venv.bak/
 .mypy_cache/
 
 .idea/
+
+PhoneApp/node_modules/
+
+webapp/node_modules/
