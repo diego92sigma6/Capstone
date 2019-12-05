@@ -54,7 +54,7 @@ def captureAndProcess():
 
 def takePicWithRaspberryCamera():
     camera = PiCamera()
-    camera.resolution = (320,240)
+    camera.resolution = (640,480)
     camera.framerate = 24
     #camera.start_preview(alpha=200)
     #sleep(5)

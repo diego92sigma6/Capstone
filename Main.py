@@ -13,6 +13,7 @@ def output_reader(proc):
 def main():
 
     print("starting REST API")
+    #REST API
     proc = subprocess.Popen(['python', '-u', './RestAPI.py'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     t = threading.Thread(target=output_reader, args=(proc,))
     t.start()
