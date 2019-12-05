@@ -1,8 +1,11 @@
 {
-  "allowMixedContent" : true,
-  "appId": "io.ionic.starter",
-  "appName": "PhoneApp",
+  "allowMixedContent": true,
+  "appId": "com.capstone.viewer",
+  "appName": "CapstoneViewer",
   "bundledWebRuntime": false,
   "npmClient": "npm",
-  "webDir": "build"
+  "webDir": "build",
+  "server" : {
+    "hostname" : "10.121.105.57"
+  }
 }
