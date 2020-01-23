@@ -15,7 +15,7 @@ function SensorReadings() {
                 let rows = [];
                 apiData.data.forEach(d => {
                     if (d.type === Constants.OUTPUT_TYPES.WIFI) {
-                        d.data = d.data.join('\n\n');
+			d.data = d.data.antenna0 + d.data.antenna1;
                     } else if (d.type === Constants.OUTPUT_TYPES.CAMERA){
                         d.data = <CameraImage imageOID={d.data}/>;
                     } else {

@@ -5,6 +5,8 @@ from fcntl import fcntl, F_GETFL, F_SETFL
 from os import O_NONBLOCK, read
 import threading
 
+if __name__ == "__main__":
+    reader = new WifiAntennaReader()
 
 """
 Will use the library called pycrack, which is an
