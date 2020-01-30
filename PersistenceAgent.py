@@ -2,6 +2,8 @@ import pymongo
 import datetime
 import gridfs
 import base64
+from bson import json_util
+import json
 
 MONGO_CONNECTION_STRING = 'mongodb://localhost:27017'
 MONGO_DATABASE_NAME = 'Capstone'
@@ -67,6 +69,10 @@ class PersistenceAgent:
     """
     def formatInfo(self, gatheredInfo):
         now = datetime.datetime.now()
+        antennas =  gatheredInfo['wifi']
+        antenna0 = [json.dumps(reading.__dict__, default=str) for reading in antennas['antenna0']]
+        antenna1 = [json.dumps(reading.__dict__, default=str) for reading in antennas['antenna1']]
+        wifi = [antenna0, antenna1]
         result = [
             {
                 "type": "motion",
@@ -80,7 +86,7 @@ class PersistenceAgent:
             },
             {
                 "type": "wifi",
-                "data": gatheredInfo["wifi"],
+                "data": wifi,
                 "date": now
             },
         ]

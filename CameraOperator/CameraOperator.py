@@ -6,9 +6,9 @@ import cv2
 import numpy as np
 import os
 import time
-import DetectChars
-import DetectPlates
-import PossiblePlate
+import DetectChars 
+import DetectPlates 
+import PossiblePlate 
 from picamera import PiCamera
 from picamera.array import PiRGBArray
 from time import sleep
@@ -111,15 +111,14 @@ def doTheRest(blnKNNTrainingSuccessful, imgOriginalScene):
 
         if showResult:
             cv2.imshow("imgOriginalScene", imgOriginalScene)                # re-show scene image
-
+        
         cv2.imwrite("imgOriginalScene.png", imgOriginalScene)           # write image out to file
-
     # end if else
 
-	if showResult:
-    		cv2.waitKey(0)					# hold windows open until user presses a key
+	#if showResult:
+        #cv2.waitKey(0)					# hold windows open until user presses a key
 
-        return licPlate.strChars, imgOriginalScene
+    return licPlate.strChars, imgOriginalScene
 # end main
 
 ###################################################################################################
