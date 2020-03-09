@@ -1,8 +1,8 @@
-from AgentAlerter import *
-from PersistenceAgent import *
-from PiezoElectricReader import *
-from MotionSensorReader import *
-from WifiAntennaReader import *
+from AgentAlerter import AgentAlerter
+from PersistenceAgent import PersistenceAgent
+from PiezoElectricReader import PiezoElectricReader
+from MotionSensorReader import MotionSensorReader
+from WifiAntennaReader import WifiAntennaReader
 import time
 
 POLLING_PERIOD = 3

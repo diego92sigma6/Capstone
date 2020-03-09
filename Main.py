@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import subprocess
 import threading
-from ReadingsHUB import *
+from ReadingsHUB import ReadingsHUB
 
 
 def output_reader(proc, tag):

@@ -5,6 +5,7 @@ from fcntl import fcntl, F_GETFL, F_SETFL
 from os import O_NONBLOCK, read
 import threading
 import re
+import numpy as np
 from datetime import *
 
 class WifiReading:
@@ -90,7 +91,7 @@ class WifiAntennaReader:
         if len(readingString) == 0:
             return
         lines = [line.split() for line in readingString.split('\n') if re.compile(r'.*([\d\w]{2}:){5}[\d\w]{2}').match(line)]
-        readings = [WifiReading(*l) for l in lines if len(l) == 11]
+        readings = [WifiReading(*l) for l in lines if len(l) == 11 if not np.any([re.compile(r'.*associated.*').match(col) for col in l])]
         antenna = self.antenna0 if antennaNumber == 0 else self.antenna1
         oneMinuteAgo = datetime.now() - timedelta(minutes = 1)
         for reading in readings:
@@ -99,13 +100,16 @@ class WifiAntennaReader:
                 readings.remove(reading)
 
 
+    '''
+    Adds data to the antenna array
+    '''
     def addAntennaData(self, reading, antenna):
         lastReading = [storedReading for storedReading in antenna if storedReading.bssid == reading.bssid]
         oneMinuteAgo = datetime.now() - timedelta(minutes = 1)
 
         if len(lastReading) is 0:
             antenna.append(reading)
-        elif lastReading[0].pwr < reading.pwr or lastReading[0].created < oneMinuteAgo:
+        elif lastReading[0].created < oneMinuteAgo:
             antenna.remove(lastReading[0])
             antenna.append(reading)
         return antenna

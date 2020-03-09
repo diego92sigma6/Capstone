@@ -1,11 +1,13 @@
 import Constants as Constants
 import RPi.GPIO as GPIO
+READ_PIN = 5
+LED_PIN = 11
 
 class MotionSensorReader:
 
     def __init__(self):
-	GPIO.setup(11, GPIO.IN)
-	GPIO.setup(3, GPIO.OUT)
+	GPIO.setup(READ_PIN, GPIO.IN)
+	GPIO.setup(LED_PIN, GPIO.OUT)
 
 
     """

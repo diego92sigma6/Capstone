@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-PIN = 13
+PIN = 3
 
 
 class PiezoElectricReader:
