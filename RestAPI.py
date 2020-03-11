@@ -78,10 +78,9 @@ def get_rawdatas():
     result = []
     for doc in entity:
         if doc['type'] == 'camera' or True:
-            #doc['data'] = fs.get(doc['data'])
             result.append(doc)
     if not entity:
-        abort(404, 'Failed')
+        abort(500, 'Failed')
     json = dumps(result, ensure_ascii=False, default=str).encode('utf-8')
     return json
 

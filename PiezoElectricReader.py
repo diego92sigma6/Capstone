@@ -1,7 +1,8 @@
+import Constants
 import RPi.GPIO as GPIO
 import time
 
-PIN = 3
+PIN = Constants.PIEZO_SENSOR_PIN
 
 
 class PiezoElectricReader:

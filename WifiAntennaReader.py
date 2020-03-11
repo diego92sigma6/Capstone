@@ -7,6 +7,7 @@ import threading
 import re
 import numpy as np
 from datetime import *
+from Constants import POLLING_PERIOD
 
 class WifiReading:
     bssid = None
@@ -76,7 +77,7 @@ class WifiAntennaReader:
         # let the shell output the result:
         # get the output
         while True:
-            sleep(1)
+            sleep(POLLING_PERIOD)
             print('[WIFI] Polling antennas async')
             try:
                 self.formatAntennaData(read(p0.stderr.fileno(), 1024*2**4).decode("utf-8"), antennaNumber = 0)

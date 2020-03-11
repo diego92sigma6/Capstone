@@ -3,9 +3,9 @@ from PersistenceAgent import PersistenceAgent
 from PiezoElectricReader import PiezoElectricReader
 from MotionSensorReader import MotionSensorReader
 from WifiAntennaReader import WifiAntennaReader
+from Constants import POLLING_PERIOD
 import time
 
-POLLING_PERIOD = 3
 
 class ReadingsHUB:
 
@@ -24,6 +24,7 @@ class ReadingsHUB:
         self.motionSensorReader = MotionSensorReader()
         self.wifiAntennaReader = WifiAntennaReader()
         while True:
+            print('[HUB] Processing information')
             gatheredInfo = self.pollReaders()
             alertResults = self.agentAlerter.processAndAlert(gatheredInfo)
             gatheredInfo['alertResults'] = alertResults

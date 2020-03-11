@@ -1,10 +1,12 @@
 from CameraOperator import CameraOperator
+from DashboardSocketServer import update_dashboard_info
 from time import sleep
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import csv
 import sys
+from math import isnan
 from sklearn.ensemble import RandomForestRegressor
 
 HEADERS = [
@@ -19,8 +21,8 @@ HEADERS = [
 'Antenna 0 std deviation', 
 'Antenna 1 std deviation'] + ['antenna 0 reading %d'%(i) for i in range(0, 100)] + ['antenna 1 reading %d'%(i) for i in range(0, 100)] + ['Amount Of Cars']
 
-TRAINING_MODE = True
-CURRENT_AMOUNT_OF_CARS = 4
+TRAINING_MODE = False
+CURRENT_AMOUNT_OF_CARS = 3
 
 class AgentAlerter:
 
@@ -40,7 +42,6 @@ class AgentAlerter:
 
         self.addDataToDataset(gatheredInfo)
         #Determine detected cars using all readings
-        detectedCars = self.estimateAmountOfCars(gatheredInfo)
 
         if gatheredInfo['motion'] == 1 and gatheredInfo['piezo'] == 1:
             #always
@@ -51,6 +52,7 @@ class AgentAlerter:
                 print('[ALERTER] detectedPLate:')
                 print('[ALERTER] Detected plate: %s' % (detectedPlate))
                 pictureMetadata = self.storeLicensePlate(detectedPlate, picture)
+    
 
                 return pictureMetadata            
             else:
@@ -78,18 +80,18 @@ class AgentAlerter:
             newRow = np.append(newRow, readings['motion'])
             newRow = np.append(newRow, len(antenna0))
             newRow = np.append(newRow, len(antenna1))
-            newRow = np.append(newRow, np.average(a0pwr))
-            newRow = np.append(newRow, np.average(a1pwr))
-            newRow = np.append(newRow, np.median(a0pwr))
-            newRow = np.append(newRow, np.median(a1pwr))
-            newRow = np.append(newRow, np.var(a0pwr))
-            newRow = np.append(newRow, np.var(a1pwr))
+            newRow = np.append(newRow, np.average(a0pwr) if not isnan(np.average(a0pwr)) else 0)
+            newRow = np.append(newRow, np.average(a1pwr) if not isnan(np.average(a1pwr)) else 0)
+            newRow = np.append(newRow, np.median(a0pwr) if not isnan(np.median(a0pwr)) else 0)
+            newRow = np.append(newRow, np.median(a1pwr) if not isnan(np.median(a1pwr)) else 0)
+            newRow = np.append(newRow, np.var(a0pwr) if not isnan(np.var(a0pwr)) else 0)
+            newRow = np.append(newRow, np.var(a1pwr) if not isnan(np.var(a1pwr)) else 0)
 
             #create readings
             padded0 = np.zeros(100)
             padded1 = np.zeros(100)
-            padded0[:a0pwr.shape[0]] = a0pwr
-            padded1[:a1pwr.shape[0]] = a1pwr
+            padded0[:a0pwr.shape[0]] = sorted(a0pwr, reverse=True)
+            padded1[:a1pwr.shape[0]] = sorted(a1pwr, reverse=True)
 
             newRow = np.append(newRow, padded0)
             newRow = np.append(newRow, padded1)
@@ -102,21 +104,27 @@ class AgentAlerter:
             
             #save row
             writer.writerow(newRow)
-
-    def predictAmountOfCars(testData):
-        dataset = pd.read_csv('trainingData.csv')
-        X = dataset.iloc[:, 1:(len(HEADERS))].values
-        Y = dataset.iloc[:, len(HEADERS)]
-        regressor = RandomForestRegressor(n_estimators = 10, random_state = 0)
-        regressor.fit(X,Y)
-        y_pred = regressor.predict(testData)
+            #emit new row
+            update_dashboard_info(newRow)
 
 
+    def predictAmountOfCars(self, testData):
+        try:
+            dataset = pd.read_csv('trainingData.csv', delimiter=',' )
+            X = dataset.iloc[:, 1:(len(HEADERS))].values
+            Y = dataset.iloc[:, len(HEADERS)-1].values
+            regressor = RandomForestRegressor(n_estimators = 10, random_state = 0)
+            regressor.fit(X,Y)
+            testData.reshape(-1, 1)
+            y_pred = regressor.predict(np.reshape(testData, (1, -1)))
+            return y_pred[0]
+        except Error:
+            print('[REGRESSION] Error:')
+            print(Error)
+            return -1
 
-    def estimateAmountOfCars(self, readings):
-        #generate test data
-        pass
-        
+
+
 
     """
     Uses the persistence agent to store the taken picture + the detected license plate
