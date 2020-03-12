@@ -92,8 +92,6 @@ def get_image(oid):
         response.set_header('Content-type', 'application/json')
         result = [{ 'img' : img }]
         return dumps(result, ensure_ascii=False, default=str).encode('utf-8')
-
-        return base64.b64encode(img)
     except:
         traceback.print_exc()
         return None

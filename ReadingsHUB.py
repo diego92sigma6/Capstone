@@ -29,6 +29,7 @@ class ReadingsHUB:
             alertResults = self.agentAlerter.processAndAlert(gatheredInfo)
             gatheredInfo['alertResults'] = alertResults
             self.persistenceAgent.storeRawData(gatheredInfo)
+            print('[HUB] Finished processing information')
             time.sleep(POLLING_PERIOD)
 
     def pollReaders(self):

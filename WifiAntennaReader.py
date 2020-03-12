@@ -47,16 +47,19 @@ class WifiAntennaReader:
     pollingThread = None
     antenna0 = []
     antenna1 = []
+
+    def configure_antenna(self, antennaName):
+        subprocess.call(['sudo','ifconfig',antennaName, 'down'])
+        subprocess.call(['sudo','iwconfig',antennaName, 'mode', 'monitor'])
+        subprocess.call(['sudo','ifconfig',antennaName, 'up'])
+
     
     def __init__(self):
 
+
         # prepare monitor mode
-        subprocess.call(['sudo','ifconfig','wlan1', 'down'])
-        subprocess.call(['sudo','iwconfig','wlan1', 'mode', 'monitor'])
-        subprocess.call(['sudo','ifconfig','wlan1', 'up'])
-        subprocess.call(['sudo','ifconfig','wlan2', 'down'])
-        subprocess.call(['sudo','iwconfig','wlan2', 'mode', 'monitor'])
-        subprocess.call(['sudo','ifconfig','wlan2', 'up'])
+        self.configure_antenna('wlan0')
+        self.configure_antenna('wlan1')
 
         # run the shell as a subprocess:
         p0 = subprocess.Popen(['sudo', 'airodump-ng', 'wlan1'], stdout = subprocess.PIPE, stderr = subprocess.PIPE)

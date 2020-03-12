@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import csv
 import sys
+import threading
 from math import isnan
 from sklearn.ensemble import RandomForestRegressor
 
@@ -26,6 +27,7 @@ CURRENT_AMOUNT_OF_CARS = 3
 
 class AgentAlerter:
 
+    lastPicture = None
 
     def __init__(self, persistenceAgent):
         if persistenceAgent is None:
@@ -44,22 +46,22 @@ class AgentAlerter:
         #Determine detected cars using all readings
 
         if gatheredInfo['motion'] == 1 and gatheredInfo['piezo'] == 1:
-            #always
-            detectedPlate = None
-            picture = None
-            detectedPlate, picture = CameraOperator.captureAndProcess()
-            if detectedPlate is not None or picture is not None:
-                print('[ALERTER] detectedPLate:')
-                print('[ALERTER] Detected plate: %s' % (detectedPlate))
-                pictureMetadata = self.storeLicensePlate(detectedPlate, picture)
-    
-
-                return pictureMetadata            
-            else:
-                print('[ERROR] no detected plate')
-                return None
+            detect = threading.Thread(target=self.detectLicensePlate)
+            detect.start()
+            return self.lastPicture
         else:
             return None
+
+    def detectLicensePlate(self):
+        detectedPlate = None
+        picture = None
+        detectedPlate, picture = CameraOperator.captureAndProcess()
+        if detectedPlate is not None or picture is not None:
+            print('[ALERTER] Detected plate: %s' % (detectedPlate))
+            pictureMetadata = self.storeLicensePlate(detectedPlate, picture)
+            self.lastPicture = pictureMetadata            
+        else:
+            print('[ERROR] no detected plate')
 
     def addDataToDataset(self, readings):
         with open('trainingData.csv', 'a+') as csvfile:
