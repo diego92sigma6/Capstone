@@ -24,7 +24,6 @@ def startServers():
 
 def main():
 
-
     print("starting system")
     #startServers()
 

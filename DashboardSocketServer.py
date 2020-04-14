@@ -1,21 +1,16 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, send, emit
+#from flask import Flask, render_template
+#from flask_socketio import SocketIO, send, emit
+import socketio
 import base64
 import eventlet
+eventlet.monkey_patch()
 import logging
 import threading
 import time
 from json import dumps
 
-# create a Socket.IO server
-app = Flask(__name__)
-#app.config['SECRET_KEY'] = 'secret!'
-
-#original
-socketio = SocketIO(app, cors_allowed_origins='*')
-
-#eventlet experiment
-#socketio = SocketIO(async_mode='eventlet')
+sio = socketio.Server(cors_allowed_origins='*', async_mode='eventlet')
+app = socketio.WSGIApp(sio)
 
 def data_to_json(data):
     data = {
@@ -24,40 +19,40 @@ def data_to_json(data):
     json = dumps(data, ensure_ascii=False, default=str).encode('utf-8')
     return json
 
+
 def update_dashboard_info(data):
     print('[SOCKET] Sending info')
     json = data_to_json(data)
-    socketio.send('dashboard', json)
+    sio.emit('dashboard', json)
 
 def send_plate_picture(picture):
     print('[SOCKET] Sending picture')
     json = data_to_json(picture)
-    socketio.send('license_plate', json)
+    #socketio.send('license_plate', json)
+    sio.emit('license_plate', json)
 
-@socketio.on('debug')
-def debug():
+@sio.event
+def debug(sid, environ):
     print('[SOCKET] debug ')
 
-@socketio.on('connect')
-def connect():
+@sio.event
+def connect(sid, environ):
     print('[SOCKET] Client connected')
 
-@socketio.on('disconnect')
-def disconnect():
+@sio.event
+def disconnect(sid, environ):
     print('[SOCKET] Client disconnected')
-
-@socketio.on_error_default  
-def default_error_handler(e):
-    print('[SOCKET] Error: %s'%(e))
 
 
 def serve():
     print("[SOCKET] Starting")
-    #eventlet.wsgi.server(eventlet.listen(('', 5001)), app)
+    sock = eventlet.listen(('', 5000))
+    eventlet.wsgi.server(sock, app, debug=True)
     #app.run(host='0.0.0.0', port=5001)
     #socketio.run(app, host='0.0.0.0', cors_allowed_origins='*')
-    socketio.run(app)
+    #socketio.run(app)
     print("[SOCKET] Stopped")
+
 
 x = threading.Thread(target=serve)
 x.start()

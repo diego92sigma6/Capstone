@@ -18,6 +18,7 @@ class ReadingsHUB:
     wifiAntennaReader = None
 
     def __init__(self):
+        print('[HUB] Starting Readings HUB')
         self.persistenceAgent = PersistenceAgent()
         self.agentAlerter = AgentAlerter(self.persistenceAgent)
         self.piezoElectricReader = PiezoElectricReader()

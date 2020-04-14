@@ -58,8 +58,8 @@ class WifiAntennaReader:
 
 
         # prepare monitor mode
-        self.configure_antenna('wlan0')
         self.configure_antenna('wlan1')
+        self.configure_antenna('wlan2')
 
         # run the shell as a subprocess:
         p0 = subprocess.Popen(['sudo', 'airodump-ng', 'wlan1'], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
