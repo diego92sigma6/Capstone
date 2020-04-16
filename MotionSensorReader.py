@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 class MotionSensorReader:
 
     def __init__(self):
-	    GPIO.setup(Constants.MOTION_SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_OFF)
+	    GPIO.setup(Constants.MOTION_SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN )
 
 
     """

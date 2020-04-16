@@ -5,11 +5,11 @@ import multiprocessing
 import time
 
 PIN = Constants.PIEZO_SENSOR_PIN
+queue = multiprocessing.Queue(1)
 
 
 class PiezoElectricReader:
 
-    sensor_was_touched = False
 
     def __init__(self):
         print('[PIEZO] Starting piezo reader')
@@ -23,8 +23,9 @@ class PiezoElectricReader:
     Process that waits for interrupt
     '''
     def waitForSensor(self):
-        GPIO.setup(PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        GPIO.add_event_detect(PIN, GPIO.BOTH, bouncetime=50)
+        GPIO.setup(PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        #GPIO.add_event_detect(PIN, GPIO.BOTH, bouncetime=50)
+        GPIO.add_event_detect(PIN, GPIO.BOTH)
         print('[PIEZO] Started')
         self.poll()
 
@@ -34,24 +35,21 @@ class PiezoElectricReader:
             if GPIO.event_detected(PIN):
                 self.triggerHandler()
                 GPIO.remove_event_detect(PIN)
-                GPIO.add_event_detect(PIN, GPIO.BOTH, bouncetime=50)
+                #GPIO.add_event_detect(PIN, GPIO.BOTH, bouncetime=50)
+                GPIO.add_event_detect(PIN, GPIO.BOTH)
             time.sleep(Constants.POLLING_PERIOD)
 
 
     def triggerHandler(self):
         print('[PIEZO] Triggered')
-        self.sensor_was_touched = True
-
+        if (queue.empty()):
+            queue.put(True)
 
     '''
     Detects the presence based on GPIO readings and processing
     '''
     def detectPresence(self):
         detected = self.getReading()
-        if detected:
-            #Make sure to turn off the detected state
-            #Another interrupt shall turn it on the next time
-            self.sensor_was_touched = False
         print('[PIEZO] reading = %s'%(detected))
         return detected
 
@@ -62,4 +60,8 @@ class PiezoElectricReader:
 
     def getReading(self):
         # mock return
-        return self.sensor_was_touched
+        if queue.empty():
+            return False
+        else:
+            reading = queue.get()
+            return reading

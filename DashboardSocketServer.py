@@ -13,6 +13,7 @@ sio = socketio.Server(cors_allowed_origins='*', async_mode='eventlet')
 app = socketio.WSGIApp(sio)
 
 def data_to_json(data):
+    # data
     data = {
         'data': data
     }
@@ -40,7 +41,11 @@ def connect(sid, environ):
     print('[SOCKET] Client connected')
 
 @sio.event
-def disconnect(sid, environ):
+def request(sid, environ):
+    print('[SOCKET] ********************** Request')
+
+@sio.event
+def disconnect(sid):
     print('[SOCKET] Client disconnected')
 
 

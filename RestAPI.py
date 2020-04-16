@@ -18,14 +18,9 @@ connection = MongoClient()
 db = connection.Capstone 
 fs = gridfs.GridFS(db)
 
-#class NumpyEncoder(JSONEncoder):
-    #def default(self, obj):
-        #if isinstance(obj, np.ndarray):
-            #return obj.tolist()
-        #return JSONEncoder.default(self.obj)
-
 
 # the decorator
+# allows requests from a place different than localhost to be made
 def enable_cors(fn):
     def _enable_cors(*args, **kwargs):
         # set CORS headers
@@ -40,21 +35,6 @@ def enable_cors(fn):
     return _enable_cors
 
 
-'''
-@route('/rawdata', method='PUT')
-def put_document():
-    data = request.body.readline()
-    if not data:
-        abort(400, 'No data received')
-    entity = json.loads(data)
-    if not entity.has_key('_id'):
-        abort(400, 'No _id specified')
-    try:
-        db['rawdata'].save(entity)
-    except ValidationError as ve:
-        abort(400, str(ve))
-'''
-     
 @route('/rawdata/:id', method='GET')
 @enable_cors
 def get_rawdata(id):
@@ -84,6 +64,7 @@ def get_rawdatas():
     json = dumps(result, ensure_ascii=False, default=str).encode('utf-8')
     return json
 
+#Allows to retrieve a base 64 encoded image by mongo Object ID
 @route('/image/:oid',method='GET')
 @enable_cors
 def get_image(oid):

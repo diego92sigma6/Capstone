@@ -22,7 +22,7 @@ HEADERS = [
 'Antenna 0 std deviation', 
 'Antenna 1 std deviation'] + ['antenna 0 reading %d'%(i) for i in range(0, 100)] + ['antenna 1 reading %d'%(i) for i in range(0, 100)] + ['Amount Of Cars']
 
-TRAINING_MODE = True
+TRAINING_MODE = False
 CURRENT_AMOUNT_OF_CARS = 1
 
 class AgentAlerter:
@@ -110,6 +110,9 @@ class AgentAlerter:
             update_dashboard_info(newRow)
 
 
+    '''Uses random forest regression for predicting the amount of cars
+    using the features provided in the .csv file that is filled 
+    when in test mode'''
     def predictAmountOfCars(self, testData):
         try:
             dataset = pd.read_csv('trainingData.csv', delimiter=',' )

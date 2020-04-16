@@ -36,7 +36,8 @@ class WifiReading:
         self.essid = essid
         self.created = datetime.now()
 
-
+ANTENNA0 = 'wlan1'
+ANTENNA1 = 'wlan2'
 
 """
 Will use the library called pycrack, which is an
@@ -58,12 +59,9 @@ class WifiAntennaReader:
 
 
         # prepare monitor mode
-        self.configure_antenna('wlan1')
-        self.configure_antenna('wlan2')
-
         # run the shell as a subprocess:
-        p0 = subprocess.Popen(['sudo', 'airodump-ng', 'wlan1'], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-        p1 = subprocess.Popen(['sudo', 'airodump-ng', 'wlan2'], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        p0 = subprocess.Popen(['sudo', 'airodump-ng', ANTENNA0], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        p1 = subprocess.Popen(['sudo', 'airodump-ng', ANTENNA1], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
         # set the O_NONBLOCK flag of p.stdout file descriptor:
         flags = fcntl(p0.stdout, F_GETFL) # get current p.stdout flags
         flags = fcntl(p1.stdout, F_GETFL) # get current p.stdout flags
