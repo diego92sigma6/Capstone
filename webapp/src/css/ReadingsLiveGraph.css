@@ -1,0 +1,11 @@
+.ReadingsLiveGraph {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 100px;
+}
+
+.ChartContainer {
+    height: 100px;
+    width: 25%;
+}
