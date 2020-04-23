@@ -21,7 +21,7 @@ enum34==1.1.6
 envirophat==1.0.0
 eventlet==0.25.1
 ExplorerHAT==0.4.2
-Flask==0.12.1
+Flask==1.0
 fourletterphat==0.1.0
 functools32==3.2.3.post2
 futures==3.3.0
