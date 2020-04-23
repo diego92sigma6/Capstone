@@ -4,16 +4,24 @@ import { useAsyncEffect } from 'use-async-effect'
 import * as Constants from '../Constants'
 import { IonBackButton, IonRow, IonCol, IonButtons, IonHeader, IonPage, IonToolbar, IonTitle, IonContent, IonGrid } from '@ionic/react';
 import axios from 'axios';
+import { runInThisContext } from 'vm';
 const moment = require('moment');
 
-function Details() {
+class Details extends React.Component {
 
-    //Use React Hook to modify the state containing the rawdata from the server
-    const [data, setData] = useState<any[]>([])
-    let rows: any[] = [];
+    constructor(props: any) {
+        super(props)
+        this.state = {
+            data: null
+        }
+    }
 
-    //AJAX call to obtain the rawdata entries from the raspberry pi
-    useAsyncEffect(async () => {
+    componentDidMount(){
+        this.updateData();
+    }
+
+    async updateData() {
+        let rows: any = [];
         const result = await axios(`http://${Constants.Constants.SERVER_URL}/rawdata`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -34,8 +42,15 @@ function Details() {
                 <IonCol><div>{d.data}</div></IonCol>
             </IonRow>)
         });
-        setData(rows);
-    }, []);
+        this.setState({
+            data: rows
+        });
+        setTimeout(this.updateData.bind(this), 3000)
+    }
+
+render() {
+    //Use React Hook to modify the state containing the rawdata from the server
+
 
     return (
         <IonPage>
@@ -54,11 +69,12 @@ function Details() {
                         <IonCol><div>Date</div></IonCol>
                         <IonCol><div>Contents</div></IonCol>
                     </IonRow>
-                    {data}
+                    {(this.state as any).data}
                 </IonGrid>
             </IonContent>
         </IonPage>
     );
+}
 };
 
 export default Details;

@@ -15,8 +15,7 @@ export default class Dashboard extends React.Component {
         }
         //generate connection
         this.socket = io(`http://${Constants.SERVER_IP}:${Constants.SERVER_SOCKET_PORT}`, {
-            //transports: ['polling']
-            //transports: ['websocket']
+            transports: ['websocket']
         })
         this.socket.on('dashboard', (data) => {
             data = JSON.parse(data);
@@ -28,17 +27,9 @@ export default class Dashboard extends React.Component {
         })
         const handleError = (data) => {
             console.log(data);
-            console.log(data);
-            console.log(data);
-            console.log(data);
         }
         this.socket.on("connect_error", handleError)
         this.socket.on('error', handleError)
-        // setInterval(async ()=>{
-        //     const result = await axios(`http://${Constants.SERVER_URL}/${Constants.API_METHODS.LAST_WIFI}`);
-        //     let data = JSON.parse(result.data[0].json)
-        //     this.receiveData(data);
-        // }, 3000)
     }
 
     receiveData(incomingData) {
