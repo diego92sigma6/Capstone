@@ -1,3 +1,11 @@
+'''
+Author Diego Marquez
+
+Server that offers connectivity through websockets
+Used to send data periodically when new readings have arrived
+'''
+
+
 #from flask import Flask, render_template
 #from flask_socketio import SocketIO, send, emit
 import socketio

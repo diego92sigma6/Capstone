@@ -1,3 +1,9 @@
+/**
+ * @author Diego Marquez
+ * @description Decodes a base64 encoded image when received from 
+ * the REST API
+*/
+
 import React, { useState} from 'react';
 import APIRequestService from '../services/APIRequestService';
 

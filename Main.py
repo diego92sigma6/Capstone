@@ -1,3 +1,16 @@
+'''
+Author Diego Marquez
+
+File that orchestrates all the processes running on the system
+Subprocesses stdout is handled by adding a tag to indicate where 
+the log comes from
+
+The webapp subprocess is commented out because the demonstration
+had the webapp running on a different computer, although it 
+made API calls to the raspberry
+'''
+
+
 import RPi.GPIO as GPIO
 import subprocess
 import threading

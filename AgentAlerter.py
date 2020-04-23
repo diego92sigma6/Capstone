@@ -1,3 +1,10 @@
+'''
+Author Diego Marquez
+
+This file processes the readings from both the sensors and the
+wifi antennnas. The algorithm that predicts the amount of cars is here
+'''
+
 from CameraOperator import CameraOperator
 from DashboardSocketServer import update_dashboard_info
 from time import sleep

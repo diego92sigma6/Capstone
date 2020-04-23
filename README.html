@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Installation Instructions for the Capstone Project</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        <link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+    </head>
+    <body class="vscode-light">
+        <h1 id="installation-instructions-for-the-capstone-project">Installation Instructions for the Capstone Project</h1>
+<p>by Diego Marquez</p>
+<h1 id="introduction">Introduction</h1>
+<p>This document contains installation instructions for this project. There are several projects to setup and some dependencies have to be installed by means that are not totally automatic. Therefore, the following sections will explain each project in detail</p>
+<h1 id="installation-of-python-code">Installation of Python Code</h1>
+<p>The python code used in this project is mainly about orchestrating the sensors, offering REST API and the socket server. Since the license plate recognition code requires OpenCV 3, the installation steps are sligthly more complex than usual</p>
+<h2 id="installation-of-python-27">Installation of Python 2.7</h2>
+<p>In a raspberry pi, python2 is available as a symbolic link to the Python 2.7 binary. However, in windows it is necessary to install it manually going to the <a href="https://www.python.org/download/releases/2.7/">Python Main Page</a>.</p>
+<h2 id="opencv-compilation-and-installation">OpenCV compilation and installation</h2>
+<p>OpenCV has to be manually compiled in order to have a compatible version. Here is a small script that should be run in a Raspberry PI</p>
+<pre><code class="language-bash"><div><span class="hljs-comment">#Intial setup of the OS</span>
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install python-numpy python-scipy python-matplotlib
+sudo apt-get install build-essential cmake pkg-config
+sudo apt-get install default-jdk ant
+sudo apt-get install libgtkglext1-dev
+sudo apt-get install v4l-utils
+
+sudo apt-get install libjpeg8 \
+libjpeg8-dev \
+libjpeg8-dbg \
+libjpeg-progs \
+libavcodec-dev \
+libavformat-dev \
+libgstreamer0.10-0-dbg \
+libgstreamer0.10-0 \
+libgstreamer0.10-dev \
+libxine2-dev \
+libunicap2 \
+libunicap2-dev \
+swig \
+libv4l-0 \
+libv4l-dev \
+python-numpy \
+libpython2.7 \
+python-dev \
+python2.7-dev \
+libgtk2.0-dev \
+libjasper-dev \
+libpng12-dev \
+libswscale-dev
+
+<span class="hljs-comment">#Downloading and extracting opencv</span>
+wget http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/3.0.0/opencv-3.0.0.zip
+unzip opencv-3.0.0.zip
+<span class="hljs-built_in">cd</span> opencv-3.0.0
+mkdir build
+<span class="hljs-built_in">cd</span> build
+
+<span class="hljs-comment">#Compilation and installation</span>
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+-D INSTALL_C_EXAMPLES=ON \
+-D INSTALL_PYTHON_EXAMPLES=ON \
+-D BUILD_EXAMPLES=ON \
+-D CMAKE_INSTALL_PREFIX=/usr/<span class="hljs-built_in">local</span> \
+-D WITH_V4L=ON ..
+sudo make            <span class="hljs-comment"># this takes about 3 hours on the RPi 2</span>
+sudo make install
+sudo nano /etc/ld.so.conf.d/opencv.conf
+
+<span class="hljs-comment">#Configuring opencv</span>
+<span class="hljs-comment"># opencv.conf will be blank, add the following line without the pound sign, then save and exit nano:</span>
+<span class="hljs-comment">#/usr/local/lib          </span>
+<span class="hljs-comment">#(leave a blank line at the end of opencv.conf)</span>
+
+sudo ldconfig
+sudo nano /etc/bash.bashrc
+
+<span class="hljs-comment"># add the following lines at the bottom of bash.bashrc (without comment sign)</span>
+<span class="hljs-comment">#PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig       # enter these at the bottom of bash.bashrc, NOT at the command line</span>
+<span class="hljs-comment">#export PKG_CONFIG_PATH                                          # enter these at the bottom of bash.bashrc, NOT at the command line</span>
+<span class="hljs-comment">#(leave a blank line at the end of bash.bashrc)</span>
+
+<span class="hljs-comment"># save bash.bashrc changes, then back at the command line, reboot</span>
+
+sudo shutdown -r now
+
+<span class="hljs-comment"># after rebooting, verify our OpenCV install</span>
+
+python                       <span class="hljs-comment"># enter interactive Python prompt session</span>
+<span class="hljs-comment">#&gt;&gt;&gt; import cv2</span>
+<span class="hljs-comment">#&gt;&gt;&gt; cv2.__version__</span>
+<span class="hljs-comment"># should say your OpenCV version, i.e. '3.0.0', press Ctrl+D to exit the Python prompt session</span>
+</div></code></pre>
+<h2 id="installation-of-other-requirements">Installation of other requirements</h2>
+<p>The file requirements.txt at the root of this repository contains a list of python packages that are needed for the python portion of the system to run. Fortunately, only the following command is needed to perform the setup</p>
+<pre><code class="language-bash"><div><span class="hljs-built_in">cd</span> /path/to/Capstone
+pip install -r requirements.txt
+</div></code></pre>
+<h2 id="verifying-wlan-interfaces">Verifying wlan interfaces</h2>
+<p>The working raspberry pi should have 3 network wireless interfaces. Two of them are used by this project and they are the external wireless cards. This cards have to be identified by checking its manufacturer. (This example asumes the ones requested for developing the project)</p>
+<pre><code class="language-bash"><div>sudo ifconfig
+<span class="hljs-comment"># record the two interfaces with MAC address e0:b9:4d:xx:xx:xx  </span>
+<span class="hljs-comment"># open the code file that sets up these antennas</span>
+sudo vi Constants.py
+</div></code></pre>
+<p>Now we should select the two antennas that are going to be used on the python code</p>
+<pre><code class="language-python"><div><span class="hljs-comment"># modify the antennas as shown with ifconfig</span>
+ANTENNA0 = <span class="hljs-string">'wlan1'</span>
+ANTENNA1 = <span class="hljs-string">'wlan2'</span>
+</div></code></pre>
+<h1 id="installation-of-nodejs">Installation of Node.js</h1>
+<p>Node.js is necessary for both the web application and the phone application. Here it's explained how to do so.
+On windows, node.js can be installed with <a href="https://nodejs.org/en/download/">this link</a>, and on a raspberry, node can be installed with the following commands</p>
+<pre><code class="language-bash"><div><span class="hljs-comment"># Obtain ARM compilation of Node.js</span>
+wget https://nodejs.org/dist/v8.9.0/node-v8.9.0-linux-armv6l.tar.gz
+
+<span class="hljs-comment"># Extract</span>
+tar -xzf node-v8.9.0-linux-armv6l.tar.gz
+
+<span class="hljs-comment"># Copy files to local user files</span>
+<span class="hljs-built_in">cd</span> node-v6.11.1-linux-armv6l/
+sudo cp -R * /usr/<span class="hljs-built_in">local</span>/
+
+<span class="hljs-comment"># Check integrity of installation</span>
+node -v
+npm -v
+</div></code></pre>
+<h1 id="installation-of-web-application">Installation of web application</h1>
+<h2 id="installing-node-dependencies">Installing node dependencies</h2>
+<pre><code class="language-bash"><div><span class="hljs-built_in">cd</span> /path/to/Capstone
+<span class="hljs-built_in">cd</span> webapp
+npm install
+</div></code></pre>
+<h2 id="setting-up-app">Setting up app</h2>
+<p>Now we need to configure the webapp to point to the right server to consume the REST resources and socket</p>
+<pre><code class="language-bash"><div><span class="hljs-comment"># Open constants file</span>
+vi src/Constants.jsx
+<span class="hljs-comment"># Modify SERVER_URL </span>
+</div></code></pre>
+<pre><code class="language-js"><div><span class="hljs-comment">//example</span>
+<span class="hljs-keyword">const</span> SERVER_IP = <span class="hljs-string">`192.168.2.77`</span>;
+</div></code></pre>
+<pre><code class="language-bash"><div><span class="hljs-comment"># run the application</span>
+<span class="hljs-built_in">cd</span> /path/to/Capstone
+<span class="hljs-built_in">cd</span> webapp
+npm start
+</div></code></pre>
+<h1 id="installation-of-phone-application">Installation of phone application</h1>
+<p>This is to be done on a windows computer</p>
+<h2 id="install-android-studio">Install Android Studio</h2>
+<p>It can be downloaded <a href="https://developer.android.com/studio/?gclid=CjwKCAjw-YT1BRAFEiwAd2WRtjm9qMqLB6SVyxUO_C9w5e2rMumkwszdCj7ywm9_xMTqGYaovu_NVRoCxVwQAvD_BwE&amp;gclsrc=aw.ds">here</a></p>
+<h2 id="installing-node-dependencies-1">Installing node dependencies</h2>
+<p>Node.js dependencies must be installed first. Ionic is the underlying framework that compiles the code into native phone applications. It is a node package that should be installed globally</p>
+<pre><code class="language-bash"><div><span class="hljs-built_in">cd</span> /path/to/Capstone
+<span class="hljs-built_in">cd</span> PhoneApp
+npm install
+
+<span class="hljs-comment"># Also, it is needed to install ionic globally</span>
+npm i -g @ionic/cli
+</div></code></pre>
+<h2 id="configure-app">Configure app</h2>
+<pre><code class="language-bash"><div><span class="hljs-built_in">cd</span> src
+vi Constants.ts
+</div></code></pre>
+<p>Edit constants file to add the correct server IP. Default port is 8080</p>
+<pre><code class="language-ts"><div><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> Constants: <span class="hljs-built_in">any</span> = {
+    SERVER_URL: <span class="hljs-string">'192.168.2.77:8080'</span>
+}
+</div></code></pre>
+<h2 id="test-app-on-web-browser">Test app on web browser</h2>
+<pre><code class="language-bash"><div><span class="hljs-built_in">cd</span> /path/to/Capstone
+<span class="hljs-built_in">cd</span> PhoneApp
+ionic serve
+</div></code></pre>
+<h2 id="compile-into-native-android-code">Compile into native Android Code</h2>
+<p>Capacitor is the native code compiler. Follow steps below to use it.</p>
+<pre><code class="language-bash"><div><span class="hljs-built_in">cd</span> /path/to/Capstone
+<span class="hljs-built_in">cd</span> PhoneApp
+
+<span class="hljs-comment"># enable capacitor</span>
+ionic integrations <span class="hljs-built_in">enable</span> capacitor
+npx <span class="hljs-built_in">cap</span> init Capstone com.capstone.app
+
+<span class="hljs-comment"># build app</span>
+ionic build
+
+<span class="hljs-comment"># enable platform</span>
+npx <span class="hljs-built_in">cap</span> add android
+
+<span class="hljs-comment"># open android studio</span>
+npx <span class="hljs-built_in">cap</span> open android
+
+<span class="hljs-comment"># copy files into android project</span>
+npx <span class="hljs-built_in">cap</span> copy
+</div></code></pre>
+<p>After that, the native code should be open on an android studio project. This IDE is easy for it to set a target device and run in debug mode.</p>
+
+    </body>
+    </html>

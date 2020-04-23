@@ -1,3 +1,10 @@
+'''
+Author Diego Marquez
+
+This file contains code for handling the piezoelectric sensor interrupts
+Also, offers the last reading for the orchestrator
+'''
+
 import Constants
 import RPi.GPIO as GPIO
 import threading

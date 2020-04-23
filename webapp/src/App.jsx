@@ -1,3 +1,7 @@
+/**
+ * @author Diego Marquez
+ * @description Main page. Contains the dashboard component and loads stylesheet
+*/
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css';

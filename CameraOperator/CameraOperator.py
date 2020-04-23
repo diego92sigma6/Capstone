@@ -1,3 +1,9 @@
+'''
+Author Diego Marquez (modification of third party code)
+
+Does the picture obtaination and sends it to the picture processor
+'''
+
 # Main.py
 import sys
 #sys.path.append('C:\\Python27\\Lib\\site-packages')

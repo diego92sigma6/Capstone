@@ -1,3 +1,8 @@
+/** 
+@author Rishabh Rikki
+@description Consumes data from REST api and displays it
+*/
+
 import React, { useState, EffectCallback } from 'react';
 import { Table } from 'react-bootstrap';
 import { useAsyncEffect } from 'use-async-effect'
@@ -19,8 +24,7 @@ class Details extends React.Component {
     componentDidMount(){
         this.updateData();
     }
-
-    async updateData() {
+async updateData() {
         let rows: any = [];
         const result = await axios(`http://${Constants.Constants.SERVER_URL}/rawdata`, {
             headers: {
@@ -45,6 +49,11 @@ class Details extends React.Component {
         this.setState({
             data: rows
         });
+        
+        /** 
+         * @author Diego Marquez
+         * Ensures that data is periodically polled to display last readings constantly
+        */
         setTimeout(this.updateData.bind(this), 3000)
     }
 

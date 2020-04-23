@@ -1,3 +1,10 @@
+/**
+ * @author Diego Marquez
+ * @description Opens the socket to receive the live readings
+ * also, it is the main container for the other components, but 
+ * the first child of the App component
+*/
+
 import React from 'react'
 import Constants from '../../Constants';
 import io from 'socket.io-client'

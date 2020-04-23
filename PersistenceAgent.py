@@ -1,3 +1,11 @@
+'''
+Author Diego Marquez
+
+This file handles the data storge into a mongo database
+pictures are saved using GridFS, a special subsystem of Mongo
+dedicated to storing blobs
+'''
+
 import pymongo
 import datetime
 import gridfs

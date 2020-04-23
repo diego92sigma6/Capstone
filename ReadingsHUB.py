@@ -1,3 +1,11 @@
+'''
+Author Diego Marquez
+
+This file orchestrates all the parts involving the camera, sensors and wifi antennas
+Basically it originates the polling to the sensor and antennas
+and decides wether a picture is to be taken
+'''
+
 from AgentAlerter import AgentAlerter
 from PersistenceAgent import PersistenceAgent
 from PiezoElectricReader import PiezoElectricReader

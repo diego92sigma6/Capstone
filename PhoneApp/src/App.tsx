@@ -1,3 +1,9 @@
+/** 
+@author Diego Marquez
+@description Main file of the phone application
+*/
+
+
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {

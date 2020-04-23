@@ -1,3 +1,10 @@
+/**
+ * @author Diego Marquez
+ * @description Formats the readings received from the socket
+ * and appends every new reading to an animated graph.
+ * Four graphs are used, considering there are 4 scales to display
+*/
+
 import React from 'react'
 import Constants from '../../Constants';
 import '../../css/ReadingsLiveGraph.css'

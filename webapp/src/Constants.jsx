@@ -1,3 +1,9 @@
+/**
+ * @author Diego Marquez
+ * @description Contains configurable variables that are used 
+ * throughout the web application
+*/
+
 const SERVER_IP = `192.168.2.77`;
 
 

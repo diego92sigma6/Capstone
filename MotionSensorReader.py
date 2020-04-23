@@ -1,3 +1,9 @@
+'''
+Author Diego Marquez
+
+This file handles the PIR sensor readings.
+'''
+
 import Constants as Constants
 import RPi.GPIO as GPIO
 

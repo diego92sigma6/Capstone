@@ -1,3 +1,9 @@
+/**
+ * @author Diego Marquez
+ * @description Obtains the last readings from the REST api,
+ * formats the obtained data and displays it on a table
+*/
+
 import React, { useState, useEffect } from 'react'
 import { Table } from 'react-bootstrap'
 import APIRequestService from '../services/APIRequestService';

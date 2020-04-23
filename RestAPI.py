@@ -1,3 +1,10 @@
+'''
+Author Diego Marquez
+
+This file configures the REST API that is
+consumed both by the webapp and the phone application
+'''
+
 from bson.json_util import dumps
 import cv2
 import base64

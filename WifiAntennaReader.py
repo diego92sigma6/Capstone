@@ -1,3 +1,12 @@
+'''
+Author Diego Marquez
+
+Generates two subprocesses that call airmon-ng
+the stderr is where this program writes its results to
+so this file polls the processes stderr and formats the data
+into something that can be handled by the prediction algorithms
+'''
+
 import os
 import subprocess
 from time import sleep
@@ -7,7 +16,7 @@ import threading
 import re
 import numpy as np
 from datetime import *
-from Constants import POLLING_PERIOD
+from Constants import POLLING_PERIOD, ANTENNA0, ANTENNA1
 
 class WifiReading:
     bssid = None
@@ -36,8 +45,6 @@ class WifiReading:
         self.essid = essid
         self.created = datetime.now()
 
-ANTENNA0 = 'wlan1'
-ANTENNA1 = 'wlan2'
 
 """
 Will use the library called pycrack, which is an

@@ -1,3 +1,9 @@
+'''
+Author Diego Marquez
+
+Code file used to test the correct installation of the camera on early 
+stages of the project
+'''
 from picamera import PiCamera
 from time import sleep
 import numpy as np
